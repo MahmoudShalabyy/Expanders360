@@ -28,11 +28,11 @@ const configService = new ConfigService();
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
-  host: configService.get('MYSQL_HOST'), // بدل MYSQL_HOST
-  port: 41188, // Railway internal mysql port
+  host: configService.get('MYSQLHOST'), // بدل MYSQL_HOST
+  port: 3306, // Railway internal mysql port
   username: 'root', // Railway root user
-  password: configService.get('MYSQL_PASSWORD'), // بدل MYSQL_PASSWORD
-  database: configService.get('MYSQL_DATABASE') || 'railway',
+  password: configService.get('MYSQLPASSWORD'), // بدل MYSQL_PASSWORD
+  database: configService.get('MYSQLDATABASE') || 'railway',
   entities: ['src/**/*.entity{.ts,.js}'],
   migrations: ['src/migrations/*{.ts,.js}'],
 });
