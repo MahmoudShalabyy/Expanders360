@@ -31,45 +31,58 @@ async function seed() {
     synchronize: false,
   });
 
-  await dataSource.initialize();
+  try {
+    await dataSource.initialize();
 
-  // Seed Clients
-  await dataSource
-    .createQueryBuilder()
-    .insert()
-    .into('client')
-    .values([
-      { company_name: 'Tech Corp', contact_email: 'tech@corp.com' },
-      { company_name: 'Innovate Inc', contact_email: 'innovate@inc.com' },
-    ])
-    .execute();
+    // تحقق لو جدول client موجود
+    const tableExists = await dataSource.query(`SHOW TABLES LIKE 'client'`);
+    if (!tableExists.length) {
+      console.error('❌ Table "client" does not exist. Please run migration first.');
+      await dataSource.destroy();
+      await app.close();
+      return;
+    }
 
-  // Seed Projects
-  await dataSource
-    .createQueryBuilder()
-    .insert()
-    .into('project')
-    .values([
-      { country: 'Egypt', services_needed: JSON.stringify(['web_development', 'consulting']), budget: 10000, status: 'active', clientId: 1 },
-      { country: 'UAE', services_needed: JSON.stringify(['mobile_development', 'marketing']), budget: 15000, status: 'active', clientId: 2 },
-    ])
-    .execute();
+    // Seed Clients
+    await dataSource
+      .createQueryBuilder()
+      .insert()
+      .into('client')
+      .values([
+        { company_name: 'Tech Corp', contact_email: 'tech@corp.com' },
+        { company_name: 'Innovate Inc', contact_email: 'innovate@inc.com' },
+      ])
+      .execute();
 
-  // Seed Vendors
-  await dataSource
-    .createQueryBuilder()
-    .insert()
-    .into('vendor')
-    .values([
-      { name: 'Vendor A', countries_supported: JSON.stringify(['Egypt', 'UAE']), services_offered: JSON.stringify(['web_development', 'consulting']), rating: 4.5, response_sla_hours: 24 },
-      { name: 'Vendor B', countries_supported: JSON.stringify(['UAE', 'KSA']), services_offered: JSON.stringify(['mobile_development', 'marketing']), rating: 4.0, response_sla_hours: 48 },
-    ])
-    .execute();
+    // Seed Projects
+    await dataSource
+      .createQueryBuilder()
+      .insert()
+      .into('project')
+      .values([
+        { country: 'Egypt', services_needed: JSON.stringify(['web_development', 'consulting']), budget: 10000, status: 'active', clientId: 1 },
+        { country: 'UAE', services_needed: JSON.stringify(['mobile_development', 'marketing']), budget: 15000, status: 'active', clientId: 2 },
+      ])
+      .execute();
 
-  console.log('✅ MySQL seeding completed.');
+    // Seed Vendors
+    await dataSource
+      .createQueryBuilder()
+      .insert()
+      .into('vendor')
+      .values([
+        { name: 'Vendor A', countries_supported: JSON.stringify(['Egypt', 'UAE']), services_offered: JSON.stringify(['web_development', 'consulting']), rating: 4.5, response_sla_hours: 24 },
+        { name: 'Vendor B', countries_supported: JSON.stringify(['UAE', 'KSA']), services_offered: JSON.stringify(['mobile_development', 'marketing']), rating: 4.0, response_sla_hours: 48 },
+      ])
+      .execute();
 
-  await dataSource.destroy();
-  await app.close();
+    console.log('✅ MySQL seeding completed.');
+  } catch (err) {
+    console.error('❌ Seeding failed:', err);
+  } finally {
+    await dataSource.destroy();
+    await app.close();
+  }
 }
 
 seed().catch(err => {
