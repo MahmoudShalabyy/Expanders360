@@ -17,7 +17,7 @@ export const AppDataSource = new DataSource({
   migrations: ['src/migrations/*{.ts,.js}'],
   synchronize: false,
   extra: {
-    connectionLimit: 10, // عدد الـ Connections المتزامنة
+    connectionLimit: 3, // عدد الـ Connections المتزامنة
     connectTimeout: 30000, // 30 ثانية
     acquireTimeout: 30000, // 30 ثانية
     queueLimit: 0, // إزالة الحد الأقصى للـ Queue
