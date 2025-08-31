@@ -9,18 +9,20 @@ import * as nodemailer from 'nodemailer';
       provide: 'MAILER',
       useFactory: async () => {
         const transporter = nodemailer.createTransport({
-          host: 'localhost',
-          port: 1025,
-          secure: false,
-          ignoreTLS: true,
-          logger: true, // لتفعيل Logging
-          debug: true, // لعرض التفاصيل
+          host: process.env.SMTP_HOST,
+          port: parseInt(process.env.SMTP_PORT, 10),
+          secure: process.env.SMTP_SECURE === 'true', // true لـ port 465, false لـ 587
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+          logger: true,
+          debug: true,
         });
-        // اختبار الاتصال
         await transporter.verify().then(() => {
-          console.log('Mailhog connection is ready');
+          console.log('SMTP connection is ready');
         }).catch((error) => {
-          console.error('Mailhog connection failed:', error);
+          console.error('SMTP connection failed:', error);
         });
         return transporter;
       },
