@@ -10,7 +10,7 @@ import * as nodemailer from 'nodemailer';
       useFactory: async () => {
         const transporter = nodemailer.createTransport({
           host: process.env.SMTP_HOST,
-          port: parseInt(process.env.SMTP_PORT, 10),
+          port: parseInt(process.env.SMTP_PORT || '1025', 10),
           secure: process.env.SMTP_SECURE === 'true', // true لـ port 465, false لـ 587
           auth: {
             user: process.env.SMTP_USER,
