@@ -10,6 +10,6 @@ import { DocumentEntity, DocumentSchema } from './schemas/document.schema';
   ],
   controllers: [DocumentsController],
   providers: [DocumentsService],
-  exports: [DocumentsService],
+  exports: [DocumentsService, MongooseModule],
 })
 export class DocumentsModule {}
