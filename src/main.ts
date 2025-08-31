@@ -1,3 +1,7 @@
+// Patch لو crypto مش موجود
+import * as crypto from 'crypto';
+(global as any).crypto = crypto;
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
