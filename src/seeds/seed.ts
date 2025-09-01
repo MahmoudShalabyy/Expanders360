@@ -1,3 +1,4 @@
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
 import { DocumentEntity } from '../documents/schemas/document.schema';
@@ -22,13 +23,17 @@ async function seed() {
   const configService = app.get(ConfigService);
   const dataSource = new DataSource({
     type: 'mysql',
-    host: configService.get('MYSQL_HOST'),
-    port: Number(configService.get('MYSQL_PORT')),
-    username: configService.get('MYSQL_USERNAME'),
-    password: configService.get('MYSQL_PASSWORD'),
-    database: configService.get('MYSQL_DATABASE'),
+    host: configService.get('MYSQLHOST'),
+    port: Number(configService.get('MYSQLPORT')),
+    username: configService.get('MYSQLUSER'),
+    password: configService.get('MYSQLPASSWORD'),
+    database: configService.get('MYSQLDATABASE'),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     synchronize: false,
+    extra: {
+      connectionTimeout: 30000, // 30 seconds timeout
+      acquireTimeout: 30000,   // 30 seconds to acquire connection
+    },
   });
 
   try {
