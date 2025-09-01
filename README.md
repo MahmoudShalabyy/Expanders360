@@ -97,7 +97,7 @@ ts-node src/seeds/seed.ts
 ## Demo
 
 A short demo video showcasing API usage is available here:
-👉 [Demo Video](https://your-demo-link.com)
+👉 [Demo Video](https://drive.google.com/file/d/1orOH6izvRn2Z_CWLGlsUxOjFL5tl0DBE/view?usp=sharing)
 
 ## Contributing
 
